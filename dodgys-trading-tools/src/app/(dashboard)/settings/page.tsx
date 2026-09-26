@@ -2,22 +2,23 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { format } from 'date-fns'
-import { Plus, Trash2, Check, X } from 'lucide-react'
+import { Check } from 'lucide-react'
 import TopBar from '@/components/TopBar'
 import { useAuth } from '@/contexts/AuthContext'
-import { formatCurrency, cn } from '@/lib/utils'
+import { formatCurrency, cn, DEFAULT_TRADING_RULES } from '@/lib/utils'
 
-interface Rule {
+interface TradingRule {
   id: string
   name: string
-  description: string | null
-  isActive: boolean
+  enabled: boolean
+  value?: number | string
 }
 
 interface Settings {
   dailyLossLimit: number | null
   defaultInstrument: string
   timezone: string
+  tradingRules: TradingRule[]
 }
 
 interface FundedAccount {
@@ -39,15 +40,13 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState<Settings>({
     dailyLossLimit: null,
     defaultInstrument: 'NQ',
-    timezone: 'America/New_York'
+    timezone: 'America/New_York',
+    tradingRules: DEFAULT_TRADING_RULES.map(r => ({ ...r }))
   })
   const [settingsSaving, setSettingsSaving] = useState(false)
   const [settingsSuccess, setSettingsSuccess] = useState(false)
-
-  const [rules, setRules] = useState<Rule[]>([])
-  const [newRuleName, setNewRuleName] = useState('')
-  const [newRuleDescription, setNewRuleDescription] = useState('')
-  const [addingRule, setAddingRule] = useState(false)
+  const [rulesSaving, setRulesSaving] = useState(false)
+  const [rulesSuccess, setRulesSuccess] = useState(false)
 
   const [fundedAccount, setFundedAccount] = useState<FundedAccount | null>(null)
   const [fundedForm, setFundedForm] = useState({
@@ -64,24 +63,28 @@ export default function SettingsPage() {
       const res = await fetch('/api/settings')
       const data = await res.json()
       if (data.settings) {
+        let tradingRules = DEFAULT_TRADING_RULES.map(r => ({ ...r }))
+        if (data.settings.tradingRules) {
+          try {
+            const savedRules = JSON.parse(data.settings.tradingRules)
+            tradingRules = tradingRules.map(rule => {
+              const saved = savedRules.find((r: TradingRule) => r.id === rule.id)
+              if (saved) {
+                return { ...rule, enabled: saved.enabled, value: saved.value ?? rule.value }
+              }
+              return rule
+            })
+          } catch {}
+        }
         setSettings({
           dailyLossLimit: data.settings.dailyLossLimit,
           defaultInstrument: data.settings.defaultInstrument || 'NQ',
-          timezone: data.settings.timezone || 'America/New_York'
+          timezone: data.settings.timezone || 'America/New_York',
+          tradingRules
         })
       }
     } catch (error) {
       console.error('Failed to fetch settings:', error)
-    }
-  }, [])
-
-  const fetchRules = useCallback(async () => {
-    try {
-      const res = await fetch('/api/rules')
-      const data = await res.json()
-      setRules(data.rules || [])
-    } catch (error) {
-      console.error('Failed to fetch rules:', error)
     }
   }, [])
 
@@ -106,9 +109,8 @@ export default function SettingsPage() {
 
   useEffect(() => {
     fetchSettings()
-    fetchRules()
     fetchFundedAccount()
-  }, [fetchSettings, fetchRules, fetchFundedAccount])
+  }, [fetchSettings, fetchFundedAccount])
 
   const saveSettings = async () => {
     setSettingsSaving(true)
@@ -117,7 +119,11 @@ export default function SettingsPage() {
       await fetch('/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(settings)
+        body: JSON.stringify({
+          dailyLossLimit: settings.dailyLossLimit,
+          defaultInstrument: settings.defaultInstrument,
+          timezone: settings.timezone
+        })
       })
       setSettingsSuccess(true)
       setTimeout(() => setSettingsSuccess(false), 3000)
@@ -128,49 +134,42 @@ export default function SettingsPage() {
     }
   }
 
-  const addRule = async () => {
-    if (!newRuleName.trim()) return
-    setAddingRule(true)
+  const saveTradingRules = async () => {
+    setRulesSaving(true)
+    setRulesSuccess(false)
     try {
-      await fetch('/api/rules', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: newRuleName,
-          description: newRuleDescription || null
-        })
-      })
-      setNewRuleName('')
-      setNewRuleDescription('')
-      fetchRules()
-    } catch (error) {
-      console.error('Failed to add rule:', error)
-    } finally {
-      setAddingRule(false)
-    }
-  }
-
-  const toggleRule = async (rule: Rule) => {
-    try {
-      await fetch(`/api/rules/${rule.id}`, {
+      await fetch('/api/settings', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ isActive: !rule.isActive })
+        body: JSON.stringify({
+          tradingRules: JSON.stringify(settings.tradingRules)
+        })
       })
-      fetchRules()
+      setRulesSuccess(true)
+      setTimeout(() => setRulesSuccess(false), 3000)
     } catch (error) {
-      console.error('Failed to toggle rule:', error)
+      console.error('Failed to save trading rules:', error)
+    } finally {
+      setRulesSaving(false)
     }
   }
 
-  const deleteRule = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this rule?')) return
-    try {
-      await fetch(`/api/rules/${id}`, { method: 'DELETE' })
-      fetchRules()
-    } catch (error) {
-      console.error('Failed to delete rule:', error)
-    }
+  const toggleRule = (ruleId: string) => {
+    setSettings(prev => ({
+      ...prev,
+      tradingRules: prev.tradingRules.map(r =>
+        r.id === ruleId ? { ...r, enabled: !r.enabled } : r
+      )
+    }))
+  }
+
+  const updateRuleValue = (ruleId: string, value: number | string) => {
+    setSettings(prev => ({
+      ...prev,
+      tradingRules: prev.tradingRules.map(r =>
+        r.id === ruleId ? { ...r, value } : r
+      )
+    }))
   }
 
   const saveFundedAccount = async (e: React.FormEvent) => {
@@ -210,6 +209,62 @@ export default function SettingsPage() {
       })
     } catch (error) {
       console.error('Failed to delete funded account:', error)
+    }
+  }
+
+  const getRuleInput = (rule: TradingRule) => {
+    switch (rule.id) {
+      case 'maxTrades':
+        return (
+          <input
+            type="number"
+            value={rule.value || 2}
+            onChange={(e) => updateRuleValue(rule.id, parseInt(e.target.value) || 2)}
+            className="w-16 bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-1 text-white text-sm text-center"
+            min="1"
+            max="10"
+          />
+        )
+      case 'minRR':
+        return (
+          <div className="flex items-center gap-1">
+            <input
+              type="number"
+              value={rule.value || 2}
+              onChange={(e) => updateRuleValue(rule.id, parseFloat(e.target.value) || 2)}
+              className="w-16 bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-1 text-white text-sm text-center"
+              min="1"
+              max="5"
+              step="0.5"
+            />
+            <span className="text-[#A0A0A0] text-sm">:1</span>
+          </div>
+        )
+      case 'onlyInstrument':
+        return (
+          <select
+            value={rule.value || 'NQ'}
+            onChange={(e) => updateRuleValue(rule.id, e.target.value)}
+            className="bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-1 text-white text-sm"
+          >
+            <option value="NQ">NQ</option>
+            <option value="ES">ES</option>
+            <option value="MNQ">MNQ</option>
+          </select>
+        )
+      case 'stopAfterLosses':
+        return (
+          <input
+            type="number"
+            value={rule.value || 1}
+            onChange={(e) => updateRuleValue(rule.id, parseInt(e.target.value) || 1)}
+            className="w-16 bg-[#0A0A0A] border border-[#1A1A1A] rounded px-2 py-1 text-white text-sm text-center"
+            min="1"
+            max="5"
+          />
+        )
+      default:
+        return null
     }
   }
 
@@ -358,86 +413,61 @@ export default function SettingsPage() {
         {activeTab === 'rules' && (
           <div className="space-y-6">
             <div className="card">
-              <h2 className="text-white font-medium mb-4">Your Trading Rules</h2>
+              <h2 className="text-white font-medium mb-2">Trading Rules Tracker</h2>
               <p className="text-[#A0A0A0] text-sm mb-4">
-                Add rules to track compliance in the Trade Validator and Dashboard
+                Toggle rules on/off. The app auto-monitors compliance from your logged trades and validations. Results display in the Dashboard Rules Compliance card.
               </p>
 
-              <div className="space-y-3 mb-6">
-                {rules.length === 0 ? (
-                  <p className="text-[#A0A0A0] text-sm py-4 text-center">
-                    No rules defined yet. Add your first trading rule below.
-                  </p>
-                ) : (
-                  rules.map((rule) => (
-                    <div
-                      key={rule.id}
-                      className={cn(
-                        'flex items-center justify-between p-3 rounded-lg',
-                        rule.isActive ? 'bg-[#1A1A1A]' : 'bg-[#1A1A1A]/50'
-                      )}
-                    >
-                      <div className="flex-1">
-                        <p className={cn(
-                          'font-medium',
-                          rule.isActive ? 'text-white' : 'text-[#A0A0A0]'
-                        )}>
-                          {rule.name}
-                        </p>
-                        {rule.description && (
-                          <p className="text-[#A0A0A0] text-xs mt-1">{rule.description}</p>
+              <div className="space-y-2">
+                {settings.tradingRules.map((rule) => (
+                  <div
+                    key={rule.id}
+                    className={cn(
+                      'flex items-center justify-between p-3 rounded-lg transition-colors',
+                      rule.enabled ? 'bg-[#1A1A1A]' : 'bg-[#141414]'
+                    )}
+                  >
+                    <div className="flex items-center gap-3 flex-1">
+                      <button
+                        onClick={() => toggleRule(rule.id)}
+                        className={cn(
+                          'w-10 h-6 rounded-full relative transition-colors',
+                          rule.enabled ? 'bg-[#D42A2A]' : 'bg-[#333]'
                         )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => toggleRule(rule)}
+                      >
+                        <span
                           className={cn(
-                            'p-2 rounded',
-                            rule.isActive 
-                              ? 'bg-[#22C55E]/20 text-[#22C55E]' 
-                              : 'bg-[#A0A0A0]/20 text-[#A0A0A0]'
+                            'absolute top-1 w-4 h-4 rounded-full bg-white transition-transform',
+                            rule.enabled ? 'left-5' : 'left-1'
                           )}
-                        >
-                          {rule.isActive ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />}
-                        </button>
-                        <button
-                          onClick={() => deleteRule(rule.id)}
-                          className="p-2 text-[#A0A0A0] hover:text-[#EF4444]"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
+                        />
+                      </button>
+                      <span className={cn(
+                        'text-sm',
+                        rule.enabled ? 'text-white' : 'text-[#A0A0A0]'
+                      )}>
+                        {rule.name}
+                      </span>
                     </div>
-                  ))
-                )}
+                    {rule.enabled && getRuleInput(rule)}
+                  </div>
+                ))}
               </div>
 
-              <div className="border-t border-[#1A1A1A] pt-4">
-                <h3 className="text-white text-sm font-medium mb-3">Add New Rule</h3>
-                <div className="space-y-3">
-                  <input
-                    type="text"
-                    value={newRuleName}
-                    onChange={(e) => setNewRuleName(e.target.value)}
-                    className="input"
-                    placeholder="Rule name (e.g., Only trade A+ setups)"
-                  />
-                  <input
-                    type="text"
-                    value={newRuleDescription}
-                    onChange={(e) => setNewRuleDescription(e.target.value)}
-                    className="input"
-                    placeholder="Description (optional)"
-                  />
-                  <button
-                    onClick={addRule}
-                    disabled={!newRuleName.trim() || addingRule}
-                    className="btn-primary flex items-center gap-2"
-                  >
-                    <Plus className="w-4 h-4" />
-                    {addingRule ? 'Adding...' : 'Add Rule'}
-                  </button>
-                </div>
+              <div className="flex items-center gap-3 mt-6">
+                <button
+                  onClick={saveTradingRules}
+                  disabled={rulesSaving}
+                  className="btn-primary"
+                >
+                  {rulesSaving ? 'Saving...' : 'Save Rules'}
+                </button>
+                {rulesSuccess && (
+                  <span className="text-[#22C55E] text-sm flex items-center gap-1">
+                    <Check className="w-4 h-4" />
+                    Saved
+                  </span>
+                )}
               </div>
             </div>
           </div>

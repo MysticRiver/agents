@@ -19,6 +19,7 @@ model User {
   settings      Settings?
   fundedAccount FundedAccount?
   sessions      Session[]
+  validations   Validation[]
 }
 
 model Session {
@@ -78,6 +79,7 @@ model Settings {
   defaultInstrument     String   @default("NQ")
   timezone              String   @default("America/New_York")
   briefingDismissedDate String?
+  tradingRules          String?
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
   
@@ -99,4 +101,33 @@ model FundedAccount {
   updatedAt       DateTime @updatedAt
   
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Validation {
+  id                  String   @id @default(cuid())
+  userId              String
+  date                DateTime @default(now())
+  instrument          String
+  direction           String
+  setupType           String
+  checklist           String
+  emotionalState      Int
+  entryPrice          Float?
+  stopLoss            Float?
+  takeProfit          Float?
+  session             String?
+  isRevengeTrade      Boolean  @default(false)
+  isLightBulbTrade    Boolean  @default(false)
+  tradesCountToday    Int?
+  isInLossToday       Boolean?
+  screenshot          String?
+  notes               String?
+  score               Int
+  grade               String
+  scoreBreakdown      String
+  feedback            String
+  tradeTaken          Boolean?
+  createdAt           DateTime @default(now())
+  
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

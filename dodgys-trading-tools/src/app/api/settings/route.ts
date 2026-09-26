@@ -47,13 +47,15 @@ export async function PUT(request: NextRequest) {
         dailyLossLimit: data.dailyLossLimit ? parseFloat(data.dailyLossLimit) : null,
         defaultInstrument: data.defaultInstrument || 'NQ',
         timezone: data.timezone || 'America/New_York',
-        briefingDismissedDate: data.briefingDismissedDate || null
+        briefingDismissedDate: data.briefingDismissedDate || null,
+        tradingRules: data.tradingRules || null
       },
       update: {
         dailyLossLimit: data.dailyLossLimit !== undefined ? (data.dailyLossLimit ? parseFloat(data.dailyLossLimit) : null) : undefined,
         defaultInstrument: data.defaultInstrument !== undefined ? data.defaultInstrument : undefined,
         timezone: data.timezone !== undefined ? data.timezone : undefined,
-        briefingDismissedDate: data.briefingDismissedDate !== undefined ? data.briefingDismissedDate : undefined
+        briefingDismissedDate: data.briefingDismissedDate !== undefined ? data.briefingDismissedDate : undefined,
+        tradingRules: data.tradingRules !== undefined ? data.tradingRules : undefined
       }
     })
 

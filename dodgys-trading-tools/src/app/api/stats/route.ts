@@ -128,32 +128,109 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const rules = await prisma.rule.findMany({
-      where: { userId: user.id, isActive: true }
+    const settings = await prisma.settings.findUnique({
+      where: { userId: user.id }
     })
 
+    const validations = await prisma.validation.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: 'desc' }
+    })
+
+    interface TradingRule {
+      id: string
+      name: string
+      enabled: boolean
+      value?: number | string
+    }
+
+    let tradingRules: TradingRule[] = []
+    if (settings?.tradingRules) {
+      try {
+        tradingRules = JSON.parse(settings.tradingRules)
+      } catch {}
+    }
+
+    const enabledRules = tradingRules.filter(r => r.enabled)
     let rulesFollowedCount = 0
     let totalRuleChecks = 0
     const brokenRulesCount: Record<string, number> = {}
 
-    for (const trade of allTrades) {
-      if (trade.rulesFollowed) {
-        const followed = JSON.parse(trade.rulesFollowed)
-        rulesFollowedCount += followed.length
-        totalRuleChecks += followed.length
-      }
-      if (trade.rulesBroken) {
-        const broken = JSON.parse(trade.rulesBroken)
-        totalRuleChecks += broken.length
-        for (const ruleId of broken) {
-          brokenRulesCount[ruleId] = (brokenRulesCount[ruleId] || 0) + 1
+    for (const rule of enabledRules) {
+      let followed = true
+      
+      switch (rule.id) {
+        case 'maxTrades': {
+          const maxTrades = (rule.value as number) || 2
+          const tradeDays = new Map<string, number>()
+          for (const trade of allTrades) {
+            const day = format(trade.date, 'yyyy-MM-dd')
+            tradeDays.set(day, (tradeDays.get(day) || 0) + 1)
+          }
+          const violations = Array.from(tradeDays.values()).filter(c => c > maxTrades).length
+          if (violations > 0) {
+            followed = false
+            brokenRulesCount[rule.id] = violations
+          }
+          break
         }
+        case 'onlyASetups': {
+          const nonAValidations = validations.filter(v => 
+            v.tradeTaken === true && !['A+', 'A'].includes(v.grade)
+          ).length
+          if (nonAValidations > 0) {
+            followed = false
+            brokenRulesCount[rule.id] = nonAValidations
+          }
+          break
+        }
+        case 'validateEvery': {
+          const unvalidatedTrades = allTrades.filter(t => !t.validated).length
+          if (unvalidatedTrades > 0) {
+            followed = false
+            brokenRulesCount[rule.id] = unvalidatedTrades
+          }
+          break
+        }
+        case 'journalEvery': {
+          followed = true
+          break
+        }
+        case 'noEmotional': {
+          const emotionalValidations = validations.filter(v => 
+            v.tradeTaken === true && v.emotionalState >= 4
+          ).length
+          if (emotionalValidations > 0) {
+            followed = false
+            brokenRulesCount[rule.id] = emotionalValidations
+          }
+          break
+        }
+        case 'minRR': {
+          break
+        }
+        case 'onlyInstrument': {
+          const targetInstrument = rule.value as string || 'NQ'
+          const wrongInstrument = allTrades.filter(t => t.instrument !== targetInstrument).length
+          if (wrongInstrument > 0) {
+            followed = false
+            brokenRulesCount[rule.id] = wrongInstrument
+          }
+          break
+        }
+        default:
+          break
       }
+
+      totalRuleChecks++
+      if (followed) rulesFollowedCount++
     }
 
     const rulesComplianceRate = totalRuleChecks > 0 
       ? (rulesFollowedCount / totalRuleChecks) * 100 
       : null
+    
+    const hasRules = enabledRules.length > 0
 
     const fundedAccount = await prisma.fundedAccount.findUnique({
       where: { userId: user.id }
@@ -220,7 +297,7 @@ export async function GET(request: NextRequest) {
         followed: rulesFollowedCount,
         total: totalRuleChecks,
         brokenRules: brokenRulesCount,
-        hasRules: rules.length > 0
+        hasRules
       },
       fundedAccount,
       weeklyChart: dailyPnlArray,
