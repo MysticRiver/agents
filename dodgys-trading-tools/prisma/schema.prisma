@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  trades        Trade[]
+  rules         Rule[]
+  settings      Settings?
+  fundedAccount FundedAccount?
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Trade {
+  id                String   @id @default(cuid())
+  userId            String
+  date              DateTime
+  instrument        String
+  direction         String
+  entryPrice        Float
+  exitPrice         Float?
+  stopLoss          Float?
+  takeProfit        Float?
+  contracts         Int      @default(1)
+  pnl               Float?
+  pnlPoints         Float?
+  grade             String?
+  setupType         String?
+  validated         Boolean  @default(false)
+  validationData    String?
+  emotionalState    Int?
+  notes             String?
+  rulesFollowed     String?
+  rulesBroken       String?
+  screenshots       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Rule {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  dailyLossLimit        Float?
+  defaultInstrument     String   @default("NQ")
+  timezone              String   @default("America/New_York")
+  briefingDismissedDate String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model FundedAccount {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  firmName        String
+  accountSize     Float
+  profitTarget    Float
+  maxDrawdown     Float
+  currentPnl      Float    @default(0)
+  daysActive      Int      @default(0)
+  startDate       DateTime
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
