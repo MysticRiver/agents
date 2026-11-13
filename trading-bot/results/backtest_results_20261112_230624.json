@@ -1,0 +1,14 @@
+[
+  {
+    "strategy_name": "MA_Crossover",
+    "parameters": {
+      "fast_period": 9,
+      "slow_period": 21,
+      "trend_period": 50,
+      "use_trend_filter": true,
+      "atr_stop_multiplier": 2.0,
+      "atr_target_multiplier": 3.0
+    },
+    "evaluation": {
+      "score": 20.0,
+      "qualified": 

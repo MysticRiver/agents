@@ -1,0 +1,79 @@
+================================================================================
+MNQ TRADING BOT - BACKTEST SUMMARY REPORT
+Generated: 2026-11-12 23:06:24
+================================================================================
+
+STRATEGY COMPARISON
+--------------------------------------------------------------------------------
+Strategy                         Return %   Sharpe    MaxDD %   Trades    Score
+--------------------------------------------------------------------------------
+*BollingerBand_MeanReversion        13.61     1.95      -4.68      131    113.6
+ StatArb_ZScore                     21.70     1.96     -15.05      175    106.7
+ ATR_Breakout                        5.81     0.55      -7.34       58     80.8
+ Keltner_Channel                     6.41     0.53     -11.23      126     66.4
+ Range_Expansion                    10.96     0.89     -10.03      166     66.0
+ Breakout                            3.93     0.29      -7.77       89     63.9
+ RSI_MeanReversion                  -2.82    -0.39     -15.58      183     30.0
+ MA_Crossover                      -13.16    -1.68     -22.58      155     20.0
+ MA_Crossover                      -43.91    -4.04     -45.60      312     20.0
+ MACD_Momentum                     -43.54    -3.66     -46.50      334     15.0
+--------------------------------------------------------------------------------
+* = Selected strategy
+
+================================================================================
+SELECTED STRATEGY DETAILS
+================================================================================
+
+Strategy: BollingerBand_MeanReversion
+Score: 113.6
+
+Parameters:
+  bb_period: 20
+  bb_std: 2.0
+  rsi_period: 14
+  rsi_oversold: 30
+  rsi_overbought: 70
+  require_band_touch: True
+  min_band_width: 0.01
+  use_squeeze_filter: True
+
+Strengths:
+  + Positive expectancy: $26.48
+  + Positive return: 13.61%
+  + Excellent Sharpe: 1.95
+  + Low drawdown: 4.68%
+  + Good sample size: 131 trades
+  + Acceptable win rate: 49.6%
+  + Good profit factor: 1.77
+  + Acceptable R:R ratio: 1.80
+
+Detailed Metrics:
+  Total Return: $3,402.96 (13.61%)
+  Annualized Return: 33.69%
+  Sharpe Ratio: 1.95
+  Sortino Ratio: 0.48
+  Calmar Ratio: 7.20
+  Max Drawdown: $1,202.19 (-4.68%)
+  Total Trades: 131
+  Winning Trades: 65 (49.6%)
+  Profit Factor: 1.77
+  Average Win: $122.57
+  Average Loss: $-68.16
+  Risk/Reward Ratio: 1.80
+  Expectancy: $26.48
+  Avg Holding Period: 4.7 bars
+
+================================================================================
+RECOMMENDATION
+================================================================================
+
+The BollingerBand_MeanReversion strategy is RECOMMENDED for live trading.
+
+Reasons for selection:
+  - Positive expectancy: $26.48
+  - Positive return: 13.61%
+  - Excellent Sharpe: 1.95
+  - Low drawdown: 4.68%
+  - Good sample size: 131 trades
+
+================================================================================
