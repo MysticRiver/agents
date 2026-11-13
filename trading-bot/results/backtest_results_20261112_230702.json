@@ -1,0 +1,360 @@
+[
+  {
+    "strategy_name": "MA_Crossover",
+    "parameters": {
+      "fast_period": 9,
+      "slow_period": 21,
+      "trend_period": 50,
+      "use_trend_filter": true,
+      "atr_stop_multiplier": 2.0,
+      "atr_target_multiplier": 3.0
+    },
+    "evaluation": {
+      "score": 20.0,
+      "qualified": false,
+      "reasons": [
+        "Good sample size: 155 trades",
+        "Acceptable R:R ratio: 1.58"
+      ],
+      "warnings": [
+        "Negative expectancy: $-20.73",
+        "Negative return: -13.16%",
+        "Poor Sharpe: -1.68",
+        "High drawdown: 22.58%",
+        "Low win rate: 34.2%",
+        "Poor profit factor: 0.82"
+      ],
+      "metrics_summary": {
+        "total_return_pct": -13.16142857142861,
+        "sharpe_ratio": -1.6830327522070296,
+        "max_drawdown_pct": -22.57503099548069,
+        "win_rate": 34.193548387096776,
+        "profit_factor": 0.81886129881845,
+        "total_trades": 155,
+        "expectancy": -20.72811059907839
+      }
+    }
+  },
+  {
+    "strategy_name": "MA_Crossover",
+    "parameters": {
+      "fast_period": 5,
+      "slow_period": 13,
+      "trend_period": 50,
+      "use_trend_filter": false,
+      "atr_stop_multiplier": 2.0,
+      "atr_target_multiplier": 3.0
+    },
+    "evaluation": {
+      "score": 20.0,
+      "qualified": false,
+      "reasons": [
+        "Good sample size: 312 trades",
+        "Acceptable R:R ratio: 1.74"
+      ],
+      "warnings": [
+        "Negative expectancy: $-34.68",
+        "Negative return: -43.91%",
+        "Poor Sharpe: -4.04",
+        "High drawdown: 45.60%",
+        "Low win rate: 27.6%",
+        "Poor profit factor: 0.66"
+      ],
+      "metrics_summary": {
+        "total_return_pct": -43.90871428571429,
+        "sharpe_ratio": -4.037780446382973,
+        "max_drawdown_pct": -45.602459812876525,
+        "win_rate": 27.564102564102566,
+        "profit_factor": 0.660800886639948,
+        "total_trades": 312,
+        "expectancy": -34.68326465201464
+      }
+    }
+  },
+  {
+    "strategy_name": "Breakout",
+    "parameters": {
+      "entry_period": 20,
+      "exit_period": 10,
+      "atr_period": 14,
+      "atr_stop_multiplier": 2.0,
+      "volume_filter": true,
+      "volume_threshold": 1.2
+    },
+    "evaluation": {
+      "score": 63.92628571428568,
+      "qualified": true,
+      "reasons": [
+        "Positive expectancy: $11.53",
+        "Positive return: 3.93%",
+        "Low drawdown: 7.77%",
+        "Good sample size: 89 trades",
+        "Acceptable R:R ratio: 1.86"
+      ],
+      "warnings": [
+        "Poor Sharpe: 0.29",
+        "Low win rate: 37.1%",
+        "Poor profit factor: 1.09"
+      ],
+      "metrics_summary": {
+        "total_return_pct": 3.926285714285681,
+        "sharpe_ratio": 0.29011788984778025,
+        "max_drawdown_pct": -7.767517510260963,
+        "win_rate": 37.07865168539326,
+        "profit_factor": 1.0948955257403692,
+        "total_trades": 89,
+        "expectancy": 11.528892455858681
+      }
+    }
+  },
+  {
+    "strategy_name": "MACD_Momentum",
+    "parameters": {
+      "fast_period": 12,
+      "slow_period": 26,
+      "signal_period": 9,
+      "histogram_threshold": 0.5,
+      "require_histogram_confirmation": true
+    },
+    "evaluation": {
+      "score": 15.0,
+      "qualified": false,
+      "reasons": [
+        "Good sample size: 334 trades"
+      ],
+      "warnings": [
+        "Negative expectancy: $-32.09",
+        "Negative return: -43.54%",
+        "Poor Sharpe: -3.66",
+        "High drawdown: 46.50%",
+        "Low win rate: 31.7%",
+        "Poor profit factor: 0.69"
+      ],
+      "metrics_summary": {
+        "total_return_pct": -43.53557142857154,
+        "sharpe_ratio": -3.6633866559248225,
+        "max_drawdown_pct": -46.4973998164577,
+        "win_rate": 31.736526946107784,
+        "profit_factor": 0.6921020823200819,
+        "total_trades": 334,
+        "expectancy": -32.08650556030803
+      }
+    }
+  },
+  {
+    "strategy_name": "RSI_MeanReversion",
+    "parameters": {
+      "rsi_period": 14,
+      "oversold_level": 30,
+      "overbought_level": 70,
+      "exit_level": 50,
+      "use_divergence": false,
+      "require_reversal_candle": true,
+      "atr_stop_multiplier": 1.5,
+      "atr_target_multiplier": 2.5
+    },
+    "evaluation": {
+      "score": 30.0,
+      "qualified": false,
+      "reasons": [
+        "Acceptable drawdown: 15.58%",
+        "Good sample size: 183 trades",
+        "Acceptable win rate: 41.0%"
+      ],
+      "warnings": [
+        "Negative expectancy: $-3.35",
+        "Negative return: -2.82%",
+        "Poor Sharpe: -0.39",
+        "Poor profit factor: 0.97"
+      ],
+      "metrics_summary": {
+        "total_return_pct": -2.8214999999998835,
+        "sharpe_ratio": -0.39283319028043306,
+        "max_drawdown_pct": -15.576232346596358,
+        "win_rate": 40.98360655737705,
+        "profit_factor": 0.9654925965222592,
+        "total_trades": 183,
+        "expectancy": -3.3545081967211416
+      }
+    }
+  },
+  {
+    "strategy_name": "BollingerBand_MeanReversion",
+    "parameters": {
+      "bb_period": 20,
+      "bb_std": 2.0,
+      "rsi_period": 14,
+      "rsi_oversold": 30,
+      "rsi_overbought": 70,
+      "require_band_touch": true,
+      "min_band_width": 0.01,
+      "use_squeeze_filter": true
+    },
+    "evaluation": {
+      "score": 113.61183242153373,
+      "qualified": true,
+      "reasons": [
+        "Positive expectancy: $26.48",
+        "Positive return: 13.61%",
+        "Excellent Sharpe: 1.95",
+        "Low drawdown: 4.68%",
+        "Good sample size: 131 trades",
+        "Acceptable win rate: 49.6%",
+        "Good profit factor: 1.77",
+        "Acceptable R:R ratio: 1.80"
+      ],
+      "warnings": [],
+      "metrics_summary": {
+        "total_return_pct": 13.611832421533734,
+        "sharpe_ratio": 1.953526179638201,
+        "max_drawdown_pct": -4.680148952505844,
+        "win_rate": 49.61832061068702,
+        "profit_factor": 1.77103122883127,
+        "total_trades": 131,
+        "expectancy": 26.476779430407888
+      }
+    }
+  },
+  {
+    "strategy_name": "StatArb_ZScore",
+    "parameters": {
+      "lookback_period": 20,
+      "entry_z_score": 2.0,
+      "exit_z_score": 0.5,
+      "max_holding_period": 20
+    },
+    "evaluation": {
+      "score": 106.695704354955,
+      "qualified": true,
+      "reasons": [
+        "Positive expectancy: $31.49",
+        "Positive return: 21.70%",
+        "Excellent Sharpe: 1.96",
+        "Acceptable drawdown: 15.05%",
+        "Good sample size: 175 trades",
+        "Good win rate: 69.7%",
+        "Acceptable profit factor: 1.40"
+      ],
+      "warnings": [],
+      "metrics_summary": {
+        "total_return_pct": 21.695704354955,
+        "sharpe_ratio": 1.9591879532783751,
+        "max_drawdown_pct": -15.047901386011114,
+        "win_rate": 69.71428571428572,
+        "profit_factor": 1.3983813778145866,
+        "total_trades": 175,
+        "expectancy": 31.49386336422147
+      }
+    }
+  },
+  {
+    "strategy_name": "ATR_Breakout",
+    "parameters": {
+      "atr_period": 14,
+      "atr_multiplier": 2.0,
+      "lookback_period": 10,
+      "use_close": true,
+      "require_volume_confirmation": true,
+      "volume_multiplier": 1.5,
+      "trailing_stop_atr": 2.0
+    },
+    "evaluation": {
+      "score": 80.81142857142841,
+      "qualified": true,
+      "reasons": [
+        "Positive expectancy: $25.55",
+        "Positive return: 5.81%",
+        "Acceptable Sharpe: 0.55",
+        "Low drawdown: 7.34%",
+        "Good sample size: 58 trades",
+        "Acceptable profit factor: 1.21",
+        "Good R:R ratio: 2.29"
+      ],
+      "warnings": [
+        "Low win rate: 34.5%"
+      ],
+      "metrics_summary": {
+        "total_return_pct": 5.811428571428405,
+        "sharpe_ratio": 0.5501260902830549,
+        "max_drawdown_pct": -7.338465578483315,
+        "win_rate": 34.48275862068966,
+        "profit_factor": 1.206495665243307,
+        "total_trades": 58,
+        "expectancy": 25.54926108374312
+      }
+    }
+  },
+  {
+    "strategy_name": "Range_Expansion",
+    "parameters": {
+      "inside_bar_lookback": 3,
+      "breakout_multiplier": 0.5,
+      "atr_period": 14,
+      "min_contraction_ratio": 0.6,
+      "require_trend_alignment": true,
+      "trend_period": 50
+    },
+    "evaluation": {
+      "score": 65.96207142857145,
+      "qualified": true,
+      "reasons": [
+        "Positive expectancy: $17.01",
+        "Positive return: 10.96%",
+        "Acceptable Sharpe: 0.89",
+        "Acceptable drawdown: 10.03%",
+        "Good sample size: 166 trades",
+        "Acceptable R:R ratio: 1.95"
+      ],
+      "warnings": [
+        "Low win rate: 37.3%",
+        "Poor profit factor: 1.16"
+      ],
+      "metrics_summary": {
+        "total_return_pct": 10.962071428571448,
+        "sharpe_ratio": 0.8941025803284661,
+        "max_drawdown_pct": -10.033891416835365,
+        "win_rate": 37.34939759036144,
+        "profit_factor": 1.1603841909228862,
+        "total_trades": 166,
+        "expectancy": 17.00914371772808
+      }
+    }
+  },
+  {
+    "strategy_name": "Keltner_Channel",
+    "parameters": {
+      "ema_period": 20,
+      "atr_period": 14,
+      "atr_multiplier": 2.0,
+      "require_close_outside": true,
+      "squeeze_filter": true,
+      "squeeze_bb_period": 20,
+      "squeeze_bb_std": 2.0
+    },
+    "evaluation": {
+      "score": 66.40851203960896,
+      "qualified": true,
+      "reasons": [
+        "Positive expectancy: $13.22",
+        "Positive return: 6.41%",
+        "Acceptable Sharpe: 0.53",
+        "Acceptable drawdown: 11.23%",
+        "Good sample size: 126 trades",
+        "Good R:R ratio: 2.23"
+      ],
+      "warnings": [
+        "Low win rate: 33.3%",
+        "Poor profit factor: 1.11"
+      ],
+      "metrics_summary": {
+        "total_return_pct": 6.408512039608963,
+        "sharpe_ratio": 0.5276139778093857,
+        "max_drawdown_pct": -11.225131984447739,
+        "win_rate": 33.33333333333333,
+        "profit_factor": 1.1138978447195227,
+        "total_trades": 126,
+        "expectancy": 13.215301665890735
+      }
+    }
+  }
+]

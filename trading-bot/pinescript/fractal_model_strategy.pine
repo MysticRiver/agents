@@ -1,0 +1,277 @@
+// @version=6
+// @description TTrades Fractal Model Strategy for MNQ with Webhook Alerts
+// 
+// Rules derived from TTrades.com (see docs for full attribution):
+// - Daily bias from PDH/PDL closures
+// - Swing point identification (C1, C2, C3 candle structure)
+// - CISD (Change in State of Delivery) confirmation
+// - Entry on continuation with protected swing stops
+// - 2R target
+//
+// IMPORTANT: This script has NOT been tested on live TradingView.
+// The user must verify it compiles and behaves correctly.
+
+strategy("TTrades Fractal Model [MNQ]", 
+         overlay=true, 
+         pyramiding=0,
+         default_qty_type=strategy.fixed,
+         default_qty_value=1,
+         initial_capital=25000,
+         commission_type=strategy.commission.cash_per_contract,
+         commission_value=0.50,
+         slippage=1,
+         currency=currency.USD)
+
+// ============================================================================
+// INPUTS
+// ============================================================================
+
+// Bias Settings
+htfBiasPeriod = input.int(50, "HTF Bias EMA Period", minval=10)
+swingLookback = input.int(10, "Swing Lookback Period", minval=3)
+swingStrength = input.int(3, "Swing Strength (bars)", minval=1)
+
+// CISD Settings  
+cisdLookback = input.int(5, "CISD Lookback", minval=2)
+cisdThreshold = input.float(0.6, "CISD Threshold", minval=0.1, step=0.1)
+
+// Risk Settings
+atrPeriod = input.int(14, "ATR Period", minval=5)
+stopAtrMult = input.float(1.5, "Stop ATR Multiplier", minval=0.5, step=0.1)
+targetRR = input.float(2.0, "Target R:R", minval=1.0, step=0.5)
+fvgMinAtr = input.float(0.5, "Min FVG Size (ATR)", minval=0.1, step=0.1)
+
+// Session Filter (MNQ regular trading hours)
+useSessionFilter = input.bool(true, "Use Session Filter")
+sessionStart = input.session("0930-1600", "Trading Session")
+
+// Webhook Settings
+webhookEnabled = input.bool(true, "Enable Webhook Alerts")
+webhookSecret = input.string("", "Webhook Secret", tooltip="Shared secret for webhook authentication")
+
+// ============================================================================
+// CALCULATIONS
+// ============================================================================
+
+// ATR
+atr = ta.atr(atrPeriod)
+
+// HTF Bias (SOURCE: TTrades - "daily bias comes first")
+emaBias = ta.ema(close, htfBiasPeriod)
+bias = close > emaBias ? 1 : close < emaBias ? -1 : 0
+
+// Previous High/Low (approximating daily structure)
+pdh = ta.highest(high, swingLookback)[1]
+pdl = ta.lowest(low, swingLookback)[1]
+
+// Sweep detection (SOURCE: TTrades - "sweep PDH/PDL and close back")
+sweepHigh = high > pdh and close < pdh
+sweepLow = low < pdl and close > pdl
+
+// Update bias on sweeps (SOURCE: TTrades reversal logic)
+biasAfterSweep = sweepLow ? 1 : sweepHigh ? -1 : bias
+
+// ============================================================================
+// SWING POINT DETECTION
+// ============================================================================
+// SOURCE: TTrades - "price cannot reverse without forming a swing point"
+
+isSwingHigh = ta.pivothigh(high, swingStrength, swingStrength) != 0
+isSwingLow = ta.pivotlow(low, swingStrength, swingStrength) != 0
+
+// Track protected swings (SOURCE: "protected swing defines risk")
+var float protectedHigh = na
+var float protectedLow = na
+
+if isSwingHigh[swingStrength]
+    protectedHigh := high[swingStrength]
+if isSwingLow[swingStrength]
+    protectedLow := low[swingStrength]
+
+// ============================================================================
+// FAIR VALUE GAP DETECTION
+// ============================================================================
+// SOURCE: TTrades - "points of interest are fair value gaps"
+
+minGap = atr * fvgMinAtr
+
+// Bullish FVG: gap between candle 1 high and candle 3 low
+fvgBullish = low > high[2] and (low - high[2]) > minGap
+fvgBearish = high < low[2] and (low[2] - high) > minGap
+
+var float fvgBullishHigh = na
+var float fvgBullishLow = na
+var float fvgBearishHigh = na
+var float fvgBearishLow = na
+
+if fvgBullish
+    fvgBullishHigh := low
+    fvgBullishLow := high[2]
+if fvgBearish
+    fvgBearishHigh := low[2]
+    fvgBearishLow := high
+
+// ============================================================================
+// CISD DETECTION
+// ============================================================================
+// SOURCE: TTrades - "must see change in state of delivery"
+// MY INTERPRETATION: Momentum shift detection
+
+momentum = close - close[cisdLookback]
+momentumNorm = momentum / atr
+
+cisdBullish = momentumNorm > cisdThreshold and momentumNorm[1] < 0
+cisdBearish = momentumNorm < -cisdThreshold and momentumNorm[1] > 0
+
+// ============================================================================
+// C2 CLOSURE DETECTION
+// ============================================================================
+// SOURCE: TTrades - "Candle 2 will always be the swing high or swing low"
+
+// Bullish C2: swing low or sweep low with bullish close
+c2Bullish = (isSwingLow[swingStrength] or (low <= protectedLow * 1.001 and close > open)) and biasAfterSweep >= 0
+
+// Bearish C2: swing high or sweep high with bearish close
+c2Bearish = (isSwingHigh[swingStrength] or (high >= protectedHigh * 0.999 and close < open)) and biasAfterSweep <= 0
+
+// ============================================================================
+// ENTRY SIGNALS (C3 - Continuation)
+// ============================================================================
+// SOURCE: TTrades - "trade candle 3", "enter on continuation after CISD"
+
+// Track if we had C2 + CISD on previous bar
+var bool readyForLong = false
+var bool readyForShort = false
+
+if c2Bullish and cisdBullish
+    readyForLong := true
+    readyForShort := false
+if c2Bearish and cisdBearish
+    readyForShort := true
+    readyForLong := false
+
+// C3 continuation entry
+longCondition = readyForLong[1] and close > close[1] and biasAfterSweep >= 0
+shortCondition = readyForShort[1] and close < close[1] and biasAfterSweep <= 0
+
+// Session filter
+inSession = useSessionFilter ? not na(time(timeframe.period, sessionStart)) : true
+
+// Final signals
+longSignal = longCondition and inSession and strategy.position_size == 0
+shortSignal = shortCondition and inSession and strategy.position_size == 0
+
+// Reset ready flags after entry
+if longSignal or shortSignal
+    readyForLong := false
+    readyForShort := false
+
+// ============================================================================
+// STOP LOSS & TAKE PROFIT
+// ============================================================================
+// SOURCE: TTrades - "stops beyond protected swing", "target is 2R"
+
+var float entryPrice = na
+var float stopPrice = na
+var float targetPrice = na
+
+if longSignal
+    entryPrice := close
+    stopPrice := na(protectedLow) ? close - (atr * stopAtrMult) : protectedLow - (atr * 0.25)
+    riskAmount = entryPrice - stopPrice
+    targetPrice := entryPrice + (riskAmount * targetRR)
+    
+if shortSignal
+    entryPrice := close
+    stopPrice := na(protectedHigh) ? close + (atr * stopAtrMult) : protectedHigh + (atr * 0.25)
+    riskAmount = stopPrice - entryPrice
+    targetPrice := entryPrice - (riskAmount * targetRR)
+
+// ============================================================================
+// STRATEGY EXECUTION
+// ============================================================================
+
+if longSignal
+    strategy.entry("Long", strategy.long)
+    strategy.exit("Long Exit", "Long", stop=stopPrice, limit=targetPrice)
+
+if shortSignal
+    strategy.entry("Short", strategy.short)
+    strategy.exit("Short Exit", "Short", stop=stopPrice, limit=targetPrice)
+
+// ============================================================================
+// WEBHOOK ALERT PAYLOAD
+// ============================================================================
+// Architecture: Pine emits JSON → Webhook service → LLM evaluation → Risk manager → NinjaTrader
+
+// Build JSON payload for webhook
+getPayload(side, price, stop, target) =>
+    str.format('{{' +
+        '"action":"{0}",' +
+        '"symbol":"MNQ",' +
+        '"price":{1},' +
+        '"stop":{2},' +
+        '"target":{3},' +
+        '"atr":{4},' +
+        '"bias":{5},' +
+        '"timestamp":{6},' +
+        '"secret":"{7}"' +
+    '}}', 
+    side, 
+    str.tostring(price, "#.##"),
+    str.tostring(stop, "#.##"),
+    str.tostring(target, "#.##"),
+    str.tostring(atr, "#.##"),
+    str.tostring(biasAfterSweep),
+    str.tostring(timenow),
+    webhookSecret)
+
+// Emit alerts with JSON payload
+if webhookEnabled and longSignal
+    alert(getPayload("buy", close, stopPrice, targetPrice), alert.freq_once_per_bar_close)
+
+if webhookEnabled and shortSignal
+    alert(getPayload("sell", close, stopPrice, targetPrice), alert.freq_once_per_bar_close)
+
+// ============================================================================
+// PLOTTING
+// ============================================================================
+
+// Bias
+plot(emaBias, "EMA Bias", color=color.gray, linewidth=1)
+
+// Protected swings
+plot(protectedHigh, "Protected High", color=color.red, style=plot.style_stepline, linewidth=1)
+plot(protectedLow, "Protected Low", color=color.green, style=plot.style_stepline, linewidth=1)
+
+// Entry signals
+plotshape(longSignal, "Long Entry", style=shape.triangleup, location=location.belowbar, color=color.green, size=size.small)
+plotshape(shortSignal, "Short Entry", style=shape.triangledown, location=location.abovebar, color=color.red, size=size.small)
+
+// C2 closures
+plotshape(c2Bullish, "C2 Bullish", style=shape.circle, location=location.belowbar, color=color.lime, size=size.tiny)
+plotshape(c2Bearish, "C2 Bearish", style=shape.circle, location=location.abovebar, color=color.orange, size=size.tiny)
+
+// CISD
+bgcolor(cisdBullish ? color.new(color.green, 90) : cisdBearish ? color.new(color.red, 90) : na)
+
+// ============================================================================
+// INFO TABLE
+// ============================================================================
+
+var table infoTable = table.new(position.top_right, 2, 6, bgcolor=color.new(color.black, 80))
+
+if barstate.islast
+    table.cell(infoTable, 0, 0, "Bias", text_color=color.white)
+    table.cell(infoTable, 1, 0, biasAfterSweep > 0 ? "BULLISH" : biasAfterSweep < 0 ? "BEARISH" : "NEUTRAL", 
+               text_color=biasAfterSweep > 0 ? color.green : biasAfterSweep < 0 ? color.red : color.gray)
+    table.cell(infoTable, 0, 1, "ATR", text_color=color.white)
+    table.cell(infoTable, 1, 1, str.tostring(atr, "#.##"), text_color=color.white)
+    table.cell(infoTable, 0, 2, "Protected H", text_color=color.white)
+    table.cell(infoTable, 1, 2, str.tostring(protectedHigh, "#.##"), text_color=color.red)
+    table.cell(infoTable, 0, 3, "Protected L", text_color=color.white)
+    table.cell(infoTable, 1, 3, str.tostring(protectedLow, "#.##"), text_color=color.green)
+    table.cell(infoTable, 0, 4, "Ready Long", text_color=color.white)
+    table.cell(infoTable, 1, 4, readyForLong ? "YES" : "NO", text_color=readyForLong ? color.green : color.gray)
+    table.cell(infoTable, 0, 5, "Ready Short", text_color=color.white)
+    table.cell(infoTable, 1, 5, readyForShort ? "YES" : "NO", text_color=readyForShort ? color.red : color.gray)

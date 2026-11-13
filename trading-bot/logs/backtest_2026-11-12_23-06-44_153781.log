@@ -1,0 +1,58 @@
+2026-11-12 23:06:44.156 +00:00 | INFO     | __main__:run_backtests:182 - Fetching data from 2024-06-01 to 2024-12-31
+2026-11-12 23:06:44.156 +00:00 | INFO     | src.data.data_handler:fetch_nq_data:40 - Fetching NQ data from 2024-06-01 to 2024-12-31, interval=5m
+2026-11-12 23:06:44.396 +00:00 | WARNING  | src.data.data_handler:fetch_nq_data:46 - No data returned from yfinance, generating synthetic data
+2026-11-12 23:06:44.556 +00:00 | INFO     | __main__:run_backtests:188 - Data loaded: 43201 bars from 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:44.556 +00:00 | INFO     | __main__:run_backtests:203 - Running backtests for 10 strategies...
+2026-11-12 23:06:44.556 +00:00 | INFO     | __main__:run_backtests:207 - [1/10] Testing MA_Crossover with params: {'fast_period': 9, 'slow_period': 21, 'trend_period': 50, 'use_trend_filter': True, 'atr_stop_multiplier': 2.0, 'atr_target_multiplier': 3.0}
+2026-11-12 23:06:44.571 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for MA_Crossover
+2026-11-12 23:06:44.571 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:44.571 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:46.349 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 155 trades, Return: -13.16%, Sharpe: -1.68
+2026-11-12 23:06:46.349 +00:00 | INFO     | __main__:run_backtests:207 - [2/10] Testing MA_Crossover with params: {'fast_period': 5, 'slow_period': 13, 'trend_period': 50, 'use_trend_filter': False, 'atr_stop_multiplier': 2.0, 'atr_target_multiplier': 3.0}
+2026-11-12 23:06:46.364 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for MA_Crossover
+2026-11-12 23:06:46.365 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:46.365 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:48.159 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 312 trades, Return: -43.91%, Sharpe: -4.04
+2026-11-12 23:06:48.160 +00:00 | INFO     | __main__:run_backtests:207 - [3/10] Testing Breakout with params: {'entry_period': 20, 'exit_period': 10, 'atr_period': 14, 'atr_stop_multiplier': 2.0, 'volume_filter': True, 'volume_threshold': 1.2}
+2026-11-12 23:06:48.371 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for Breakout
+2026-11-12 23:06:48.371 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:48.372 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:50.249 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 89 trades, Return: 3.93%, Sharpe: 0.29
+2026-11-12 23:06:50.249 +00:00 | INFO     | __main__:run_backtests:207 - [4/10] Testing MACD_Momentum with params: {'fast_period': 12, 'slow_period': 26, 'signal_period': 9, 'histogram_threshold': 0.5, 'require_histogram_confirmation': True}
+2026-11-12 23:06:50.265 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for MACD_Momentum
+2026-11-12 23:06:50.265 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:50.265 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:52.127 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 334 trades, Return: -43.54%, Sharpe: -3.66
+2026-11-12 23:06:52.127 +00:00 | INFO     | __main__:run_backtests:207 - [5/10] Testing RSI_MeanReversion with params: {'rsi_period': 14, 'oversold_level': 30, 'overbought_level': 70, 'exit_level': 50, 'use_divergence': False, 'require_reversal_candle': True, 'atr_stop_multiplier': 1.5, 'atr_target_multiplier': 2.5}
+2026-11-12 23:06:52.158 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for RSI_MeanReversion
+2026-11-12 23:06:52.158 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:52.158 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:54.102 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 183 trades, Return: -2.82%, Sharpe: -0.39
+2026-11-12 23:06:54.102 +00:00 | INFO     | __main__:run_backtests:207 - [6/10] Testing BollingerBand_MeanReversion with params: {'bb_period': 20, 'bb_std': 2.0, 'rsi_period': 14, 'rsi_oversold': 30, 'rsi_overbought': 70, 'require_band_touch': True, 'min_band_width': 0.01, 'use_squeeze_filter': True}
+2026-11-12 23:06:54.122 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for BollingerBand_MeanReversion
+2026-11-12 23:06:54.122 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:54.122 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:55.404 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 131 trades, Return: 13.61%, Sharpe: 1.95
+2026-11-12 23:06:55.405 +00:00 | INFO     | __main__:run_backtests:207 - [7/10] Testing StatArb_ZScore with params: {'lookback_period': 20, 'entry_z_score': 2.0, 'exit_z_score': 0.5, 'max_holding_period': 20}
+2026-11-12 23:06:55.419 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for StatArb_ZScore
+2026-11-12 23:06:55.419 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:55.419 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:56.614 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 175 trades, Return: 21.70%, Sharpe: 1.96
+2026-11-12 23:06:56.614 +00:00 | INFO     | __main__:run_backtests:207 - [8/10] Testing ATR_Breakout with params: {'atr_period': 14, 'atr_multiplier': 2.0, 'lookback_period': 10, 'use_close': True, 'require_volume_confirmation': True, 'volume_multiplier': 1.5, 'trailing_stop_atr': 2.0}
+2026-11-12 23:06:56.630 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for ATR_Breakout
+2026-11-12 23:06:56.630 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:56.630 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:06:58.379 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 58 trades, Return: 5.81%, Sharpe: 0.55
+2026-11-12 23:06:58.379 +00:00 | INFO     | __main__:run_backtests:207 - [9/10] Testing Range_Expansion with params: {'inside_bar_lookback': 3, 'breakout_multiplier': 0.5, 'atr_period': 14, 'min_contraction_ratio': 0.6, 'require_trend_alignment': True, 'trend_period': 50}
+2026-11-12 23:06:58.405 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for Range_Expansion
+2026-11-12 23:06:58.405 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:06:58.405 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:07:00.314 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 166 trades, Return: 10.96%, Sharpe: 0.89
+2026-11-12 23:07:00.314 +00:00 | INFO     | __main__:run_backtests:207 - [10/10] Testing Keltner_Channel with params: {'ema_period': 20, 'atr_period': 14, 'atr_multiplier': 2.0, 'require_close_outside': True, 'squeeze_filter': True, 'squeeze_bb_period': 20, 'squeeze_bb_std': 2.0}
+2026-11-12 23:07:00.333 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for Keltner_Channel
+2026-11-12 23:07:00.334 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:07:00.334 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:07:02.114 +00:00 | INFO     | src.backtest.engine:run:219 - Backtest complete: 126 trades, Return: 6.41%, Sharpe: 0.53
+2026-11-12 23:07:02.115 +00:00 | INFO     | __main__:main:395 - Report saved to results/backtest_report_20261112_230702.txt
+2026-11-12 23:07:02.115 +00:00 | INFO     | __main__:main:424 - Results saved to results/backtest_results_20261112_230702.json
+2026-11-12 23:07:02.115 +00:00 | INFO     | __main__:main:434 - Best strategy config saved to results/best_strategy_config.json

@@ -1,0 +1,452 @@
+{
+  "data_provenance": {
+    "source": "yfinance (Yahoo Finance)",
+    "symbol": "NQ=F",
+    "interval": "1h",
+    "period": "730d",
+    "rows": 13645,
+    "date_range": "2024-06-23 18:00:00-04:00 to 2026-11-12 20:00:00-05:00",
+    "price_range": "$16541.25 to $31583.25",
+    "is_real_data": true
+  },
+  "test_methodology": {
+    "type": "walk_forward",
+    "in_sample_ratio": 0.7,
+    "initial_capital": 25000.0,
+    "commission_per_contract": 0.5,
+    "slippage_ticks": 1.0
+  },
+  "results": [
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": -52.71039955357131,
+        "sharpe": -5.154615650222196,
+        "max_dd": -57.84096376015439,
+        "trades": 326,
+        "win_rate": 34.96932515337423,
+        "profit_factor": 0.7614882802304338
+      },
+      "out_sample": {
+        "return_pct": 21.954428571428725,
+        "sharpe": 4.538293530452122,
+        "max_dd": -16.317160549707637,
+        "trades": 121,
+        "win_rate": 40.49586776859504,
+        "profit_factor": 1.2355622869895346,
+        "expectancy": 45.860389610389944
+      },
+      "strategy": "MA_Crossover_Trend",
+      "parameters": {
+        "fast_period": 9,
+        "slow_period": 21,
+        "trend_period": 50,
+        "use_trend_filter": true,
+        "atr_stop_multiplier": 2.0,
+        "atr_target_multiplier": 3.0
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": -72.37054017857155,
+        "sharpe": -5.223863219471343,
+        "max_dd": -77.18399438713878,
+        "trades": 688,
+        "win_rate": 31.3953488372093,
+        "profit_factor": 0.7924207352755673
+      },
+      "out_sample": {
+        "return_pct": -33.26200000000003,
+        "sharpe": -3.7282713357312263,
+        "max_dd": -41.486009030777105,
+        "trades": 299,
+        "win_rate": 31.438127090301005,
+        "profit_factor": 0.8474882872114491,
+        "expectancy": -27.311036789297674
+      },
+      "strategy": "MA_Crossover_NoTrend",
+      "parameters": {
+        "fast_period": 5,
+        "slow_period": 13,
+        "trend_period": 50,
+        "use_trend_filter": false,
+        "atr_stop_multiplier": 2.0,
+        "atr_target_multiplier": 3.0
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": -20.73279910714281,
+        "sharpe": -1.5919708064538338,
+        "max_dd": -36.87862302327512,
+        "trades": 236,
+        "win_rate": 36.440677966101696,
+        "profit_factor": 0.893008682776764
+      },
+      "out_sample": {
+        "return_pct": 8.203142857142812,
+        "sharpe": 2.0346004501800423,
+        "max_dd": -18.41006784401058,
+        "trades": 86,
+        "win_rate": 39.53488372093023,
+        "profit_factor": 1.0877684658708124,
+        "expectancy": 24.34634551495003
+      },
+      "strategy": "Breakout_20_10",
+      "parameters": {
+        "entry_period": 20,
+        "exit_period": 10,
+        "atr_period": 14,
+        "atr_stop_multiplier": 2.0,
+        "volume_filter": true,
+        "volume_threshold": 1.2
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": -40.73234151785731,
+        "sharpe": -2.9308173908271944,
+        "max_dd": -54.05672954774426,
+        "trades": 714,
+        "win_rate": 37.254901960784316,
+        "profit_factor": 0.8951531940922621
+      },
+      "out_sample": {
+        "return_pct": -28.525571428571332,
+        "sharpe": -1.9311726980499457,
+        "max_dd": -53.21388599044789,
+        "trades": 310,
+        "win_rate": 38.387096774193544,
+        "profit_factor": 0.88841048971902,
+        "expectancy": -22.504493087557563
+      },
+      "strategy": "MACD_Momentum",
+      "parameters": {
+        "fast_period": 12,
+        "slow_period": 26,
+        "signal_period": 9,
+        "histogram_threshold": 0.5,
+        "require_histogram_confirmation": true
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 18.12312834821426,
+        "sharpe": 1.972091547897371,
+        "max_dd": -18.960035924426837,
+        "trades": 430,
+        "win_rate": 49.76744186046512,
+        "profit_factor": 1.074524590177438
+      },
+      "out_sample": {
+        "return_pct": -45.31135714285716,
+        "sharpe": -2.971351731143688,
+        "max_dd": -70.28811659753735,
+        "trades": 186,
+        "win_rate": 41.935483870967744,
+        "profit_factor": 0.7469668445249165,
+        "expectancy": -60.40236175115206
+      },
+      "strategy": "RSI_MeanReversion",
+      "parameters": {
+        "rsi_period": 14,
+        "oversold_level": 30,
+        "overbought_level": 70,
+        "exit_level": 50,
+        "use_divergence": false,
+        "require_reversal_candle": true,
+        "atr_stop_multiplier": 1.5,
+        "atr_target_multiplier": 2.5
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 34.02076608161614,
+        "sharpe": 4.865074585478426,
+        "max_dd": -9.84535798715692,
+        "trades": 223,
+        "win_rate": 41.25560538116592,
+        "profit_factor": 1.4380126052190905
+      },
+      "out_sample": {
+        "return_pct": 16.83415775219386,
+        "sharpe": 4.158129451214361,
+        "max_dd": -13.495732860185322,
+        "trades": 129,
+        "win_rate": 35.65891472868217,
+        "profit_factor": 1.2626714413543774,
+        "expectancy": 33.12433672905786
+      },
+      "strategy": "BollingerBand_MR",
+      "parameters": {
+        "bb_period": 20,
+        "bb_std": 2.0,
+        "rsi_period": 14,
+        "rsi_oversold": 30,
+        "rsi_overbought": 70,
+        "require_band_touch": true,
+        "min_band_width": 0.01,
+        "use_squeeze_filter": true
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 67.55664579521041,
+        "sharpe": 5.838009472744843,
+        "max_dd": -14.25550316001328,
+        "trades": 502,
+        "win_rate": 63.34661354581673,
+        "profit_factor": 1.2979564469482128
+      },
+      "out_sample": {
+        "return_pct": -4.071144284799782,
+        "sharpe": 0.23171518487154244,
+        "max_dd": -27.645735352067746,
+        "trades": 186,
+        "win_rate": 59.67741935483871,
+        "profit_factor": 0.9758441928214944,
+        "expectancy": -4.971968124730893
+      },
+      "strategy": "StatArb_ZScore",
+      "parameters": {
+        "lookback_period": 20,
+        "entry_z_score": 2.0,
+        "exit_z_score": 0.5,
+        "max_holding_period": 20
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": -5.528455357142928,
+        "sharpe": -0.04749736818289585,
+        "max_dd": -26.166904289387666,
+        "trades": 173,
+        "win_rate": 34.104046242774565,
+        "profit_factor": 0.9639948672828106
+      },
+      "out_sample": {
+        "return_pct": -0.5297142857144355,
+        "sharpe": 0.5978126897326532,
+        "max_dd": -28.841409256883544,
+        "trades": 72,
+        "win_rate": 34.72222222222222,
+        "profit_factor": 0.9953095684802984,
+        "expectancy": -1.3392857142861772
+      },
+      "strategy": "ATR_Breakout",
+      "parameters": {
+        "atr_period": 14,
+        "atr_multiplier": 2.0,
+        "lookback_period": 10,
+        "use_close": true,
+        "require_volume_confirmation": true,
+        "volume_multiplier": 1.5,
+        "trailing_stop_atr": 2.0
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 34.04328571428568,
+        "sharpe": 3.4106221615668564,
+        "max_dd": -22.61309126737071,
+        "trades": 338,
+        "win_rate": 36.09467455621302,
+        "profit_factor": 1.1514082050183032
+      },
+      "out_sample": {
+        "return_pct": 14.183857142857159,
+        "sharpe": 2.763568022665317,
+        "max_dd": -20.10508390098023,
+        "trades": 137,
+        "win_rate": 40.14598540145985,
+        "profit_factor": 1.0915275620459741,
+        "expectancy": 26.382950990615257
+      },
+      "strategy": "Range_Expansion",
+      "parameters": {
+        "inside_bar_lookback": 3,
+        "breakout_multiplier": 0.5,
+        "atr_period": 14,
+        "min_contraction_ratio": 0.6,
+        "require_trend_alignment": true,
+        "trend_period": 50
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 59.23031759553103,
+        "sharpe": 6.0582455191766424,
+        "max_dd": -15.964502329643551,
+        "trades": 218,
+        "win_rate": 38.53211009174312,
+        "profit_factor": 1.412150501909857
+      },
+      "out_sample": {
+        "return_pct": 38.63515007784593,
+        "sharpe": 6.541885126378847,
+        "max_dd": -13.686777068617944,
+        "trades": 91,
+        "win_rate": 46.15384615384615,
+        "profit_factor": 1.4381020131626816,
+        "expectancy": 106.64052219188437
+      },
+      "strategy": "Keltner_Channel",
+      "parameters": {
+        "ema_period": 20,
+        "atr_period": 14,
+        "atr_multiplier": 2.0,
+        "require_close_outside": true,
+        "squeeze_filter": true,
+        "squeeze_bb_period": 20,
+        "squeeze_bb_std": 2.0
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 44.939499999999946,
+        "sharpe": 7.108696781375458,
+        "max_dd": -9.904788552790244,
+        "trades": 36,
+        "win_rate": 44.44444444444444,
+        "profit_factor": 2.4176403892790774
+      },
+      "out_sample": {
+        "return_pct": 1.6374999999999127,
+        "sharpe": 0.8541209965725127,
+        "max_dd": -9.646006586489213,
+        "trades": 11,
+        "win_rate": 36.36363636363637,
+        "profit_factor": 1.0835364845137632,
+        "expectancy": 37.71590909090713
+      },
+      "strategy": "Fractal_Strict",
+      "parameters": {
+        "htf_bias_period": 50,
+        "swing_lookback": 10,
+        "swing_strength": 3,
+        "fvg_min_size_atr": 0.5,
+        "cisd_lookback": 5,
+        "cisd_threshold": 0.6,
+        "atr_period": 14,
+        "stop_atr_multiplier": 1.5,
+        "target_rr": 2.0,
+        "require_continuation": true
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 30.27283593749997,
+        "sharpe": 4.743759482057661,
+        "max_dd": -12.460863533420932,
+        "trades": 63,
+        "win_rate": 36.507936507936506,
+        "profit_factor": 1.6051545373397915
+      },
+      "out_sample": {
+        "return_pct": 6.153607142857101,
+        "sharpe": 2.257800020504227,
+        "max_dd": -13.491084275021462,
+        "trades": 26,
+        "win_rate": 30.76923076923077,
+        "profit_factor": 1.1828945969586497,
+        "expectancy": 59.66929945054909
+      },
+      "strategy": "Fractal_Medium",
+      "parameters": {
+        "htf_bias_period": 30,
+        "swing_lookback": 10,
+        "swing_strength": 2,
+        "fvg_min_size_atr": 0.5,
+        "cisd_lookback": 5,
+        "cisd_threshold": 0.4,
+        "atr_period": 14,
+        "stop_atr_multiplier": 1.5,
+        "target_rr": 2.0,
+        "require_continuation": true
+      }
+    },
+    {
+      "in_sample_bars": 9517,
+      "out_sample_bars": 4079,
+      "in_sample_period": "2024-06-25 21:00:00-04:00 to 2026-02-26 15:00:00-05:00",
+      "out_sample_period": "2026-02-26 16:00:00-05:00 to 2026-11-12 20:00:00-05:00",
+      "in_sample": {
+        "return_pct": 29.968800223214203,
+        "sharpe": 4.264078856079939,
+        "max_dd": -14.46822602411817,
+        "trades": 88,
+        "win_rate": 36.36363636363637,
+        "profit_factor": 1.4727118392401692
+      },
+      "out_sample": {
+        "return_pct": 18.510857142857073,
+        "sharpe": 5.671174997306615,
+        "max_dd": -9.526097755357974,
+        "trades": 34,
+        "win_rate": 41.17647058823529,
+        "profit_factor": 1.5177198384563761,
+        "expectancy": 136.60924369747846
+      },
+      "strategy": "Fractal_Relaxed",
+      "parameters": {
+        "htf_bias_period": 20,
+        "swing_lookback": 10,
+        "swing_strength": 2,
+        "fvg_min_size_atr": 0.5,
+        "cisd_lookback": 5,
+        "cisd_threshold": 0.3,
+        "atr_period": 14,
+        "stop_atr_multiplier": 1.5,
+        "target_rr": 2.0,
+        "require_continuation": true
+      }
+    }
+  ]
+}

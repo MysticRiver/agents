@@ -1,0 +1,56 @@
+2026-11-12 23:05:42.389 +00:00 | INFO     | __main__:run_backtests:182 - Fetching data from 2024-06-01 to 2024-12-31
+2026-11-12 23:05:42.389 +00:00 | INFO     | src.data.data_handler:fetch_nq_data:40 - Fetching NQ data from 2024-06-01 to 2024-12-31, interval=5m
+2026-11-12 23:05:42.633 +00:00 | WARNING  | src.data.data_handler:fetch_nq_data:46 - No data returned from yfinance, generating synthetic data
+2026-11-12 23:05:42.790 +00:00 | INFO     | __main__:run_backtests:188 - Data loaded: 43201 bars from 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:42.790 +00:00 | INFO     | __main__:run_backtests:203 - Running backtests for 10 strategies...
+2026-11-12 23:05:42.790 +00:00 | INFO     | __main__:run_backtests:207 - [1/10] Testing MA_Crossover with params: {'fast_period': 9, 'slow_period': 21, 'trend_period': 50, 'use_trend_filter': True, 'atr_stop_multiplier': 2.0, 'atr_target_multiplier': 3.0}
+2026-11-12 23:05:42.805 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for MA_Crossover
+2026-11-12 23:05:42.805 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:42.805 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:44.547 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing MA_Crossover: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:44.547 +00:00 | INFO     | __main__:run_backtests:207 - [2/10] Testing MA_Crossover with params: {'fast_period': 5, 'slow_period': 13, 'trend_period': 50, 'use_trend_filter': False, 'atr_stop_multiplier': 2.0, 'atr_target_multiplier': 3.0}
+2026-11-12 23:05:44.557 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for MA_Crossover
+2026-11-12 23:05:44.557 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:44.557 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:46.341 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing MA_Crossover: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:46.341 +00:00 | INFO     | __main__:run_backtests:207 - [3/10] Testing Breakout with params: {'entry_period': 20, 'exit_period': 10, 'atr_period': 14, 'atr_stop_multiplier': 2.0, 'volume_filter': True, 'volume_threshold': 1.2}
+2026-11-12 23:05:46.535 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for Breakout
+2026-11-12 23:05:46.535 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:46.535 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:48.268 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing Breakout: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:48.268 +00:00 | INFO     | __main__:run_backtests:207 - [4/10] Testing MACD_Momentum with params: {'fast_period': 12, 'slow_period': 26, 'signal_period': 9, 'histogram_threshold': 0.5, 'require_histogram_confirmation': True}
+2026-11-12 23:05:48.277 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for MACD_Momentum
+2026-11-12 23:05:48.277 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:48.277 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:49.994 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing MACD_Momentum: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:49.994 +00:00 | INFO     | __main__:run_backtests:207 - [5/10] Testing RSI_MeanReversion with params: {'rsi_period': 14, 'oversold_level': 30, 'overbought_level': 70, 'exit_level': 50, 'use_divergence': False, 'require_reversal_candle': True, 'atr_stop_multiplier': 1.5, 'atr_target_multiplier': 2.5}
+2026-11-12 23:05:50.012 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for RSI_MeanReversion
+2026-11-12 23:05:50.013 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:50.013 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:51.847 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing RSI_MeanReversion: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:51.847 +00:00 | INFO     | __main__:run_backtests:207 - [6/10] Testing BollingerBand_MeanReversion with params: {'bb_period': 20, 'bb_std': 2.0, 'rsi_period': 14, 'rsi_oversold': 30, 'rsi_overbought': 70, 'require_band_touch': True, 'min_band_width': 0.01, 'use_squeeze_filter': True}
+2026-11-12 23:05:51.859 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for BollingerBand_MeanReversion
+2026-11-12 23:05:51.859 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:51.859 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:53.093 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing BollingerBand_MeanReversion: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:53.093 +00:00 | INFO     | __main__:run_backtests:207 - [7/10] Testing StatArb_ZScore with params: {'lookback_period': 20, 'entry_z_score': 2.0, 'exit_z_score': 0.5, 'max_holding_period': 20}
+2026-11-12 23:05:53.101 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for StatArb_ZScore
+2026-11-12 23:05:53.101 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:53.101 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:54.292 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing StatArb_ZScore: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:54.292 +00:00 | INFO     | __main__:run_backtests:207 - [8/10] Testing ATR_Breakout with params: {'atr_period': 14, 'atr_multiplier': 2.0, 'lookback_period': 10, 'use_close': True, 'require_volume_confirmation': True, 'volume_multiplier': 1.5, 'trailing_stop_atr': 2.0}
+2026-11-12 23:05:54.302 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for ATR_Breakout
+2026-11-12 23:05:54.302 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:54.302 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:56.015 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing ATR_Breakout: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:56.016 +00:00 | INFO     | __main__:run_backtests:207 - [9/10] Testing Range_Expansion with params: {'inside_bar_lookback': 3, 'breakout_multiplier': 0.5, 'atr_period': 14, 'min_contraction_ratio': 0.6, 'require_trend_alignment': True, 'trend_period': 50}
+2026-11-12 23:05:56.036 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for Range_Expansion
+2026-11-12 23:05:56.036 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:56.036 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:57.898 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing Range_Expansion: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:57.898 +00:00 | INFO     | __main__:run_backtests:207 - [10/10] Testing Keltner_Channel with params: {'ema_period': 20, 'atr_period': 14, 'atr_multiplier': 2.0, 'require_close_outside': True, 'squeeze_filter': True, 'squeeze_bb_period': 20, 'squeeze_bb_std': 2.0}
+2026-11-12 23:05:57.911 +00:00 | INFO     | src.backtest.engine:run:156 - Running backtest for Keltner_Channel
+2026-11-12 23:05:57.911 +00:00 | INFO     | src.backtest.engine:run:157 - Data range: 2024-06-02 18:00:00 to 2024-12-31 00:00:00
+2026-11-12 23:05:57.911 +00:00 | INFO     | src.backtest.engine:run:158 - Initial capital: $25,000.00
+2026-11-12 23:05:59.661 +00:00 | ERROR    | __main__:run_backtests:230 - Error testing Keltner_Channel: Invalid frequency: M. Failed to parse with error message: ValueError("'M' is no longer supported for offsets. Please use 'ME' instead.")
+2026-11-12 23:05:59.662 +00:00 | ERROR    | __main__:main:378 - No backtest results. Exiting.

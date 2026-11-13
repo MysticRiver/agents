@@ -1,0 +1,89 @@
+[
+  {
+    "strategy": "TTrades_Fractal_Model",
+    "parameters": {
+      "htf_bias_period": 50,
+      "swing_lookback": 10,
+      "swing_strength": 3,
+      "fvg_min_size_atr": 0.5,
+      "cisd_lookback": 5,
+      "cisd_threshold": 0.6,
+      "atr_period": 14,
+      "stop_atr_multiplier": 1.5,
+      "target_rr": 2.0,
+      "require_continuation": true
+    },
+    "data_source": "SYNTHETIC (mean-reverting O-U process)",
+    "data_period": "2024-06-01 to 2024-12-31",
+    "data_interval": "5m",
+    "test_type": "walk_forward",
+    "in_sample_ratio": 0.7,
+    "out_of_sample_metrics": {
+      "total_return_pct": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown_pct": 0.0,
+      "total_trades": 0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "expectancy": 0.0
+    }
+  },
+  {
+    "strategy": "TTrades_Fractal_Model",
+    "parameters": {
+      "htf_bias_period": 20,
+      "swing_lookback": 10,
+      "swing_strength": 2,
+      "fvg_min_size_atr": 0.5,
+      "cisd_lookback": 5,
+      "cisd_threshold": 0.3,
+      "atr_period": 14,
+      "stop_atr_multiplier": 1.5,
+      "target_rr": 2.0,
+      "require_continuation": true
+    },
+    "data_source": "SYNTHETIC (mean-reverting O-U process)",
+    "data_period": "2024-06-01 to 2024-12-31",
+    "data_interval": "5m",
+    "test_type": "walk_forward",
+    "in_sample_ratio": 0.7,
+    "out_of_sample_metrics": {
+      "total_return_pct": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown_pct": 0.0,
+      "total_trades": 0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "expectancy": 0.0
+    }
+  },
+  {
+    "strategy": "TTrades_Fractal_Model",
+    "parameters": {
+      "htf_bias_period": 10,
+      "swing_lookback": 10,
+      "swing_strength": 1,
+      "fvg_min_size_atr": 0.5,
+      "cisd_lookback": 5,
+      "cisd_threshold": 0.2,
+      "atr_period": 14,
+      "stop_atr_multiplier": 1.5,
+      "target_rr": 1.5,
+      "require_continuation": true
+    },
+    "data_source": "SYNTHETIC (mean-reverting O-U process)",
+    "data_period": "2024-06-01 to 2024-12-31",
+    "data_interval": "5m",
+    "test_type": "walk_forward",
+    "in_sample_ratio": 0.7,
+    "out_of_sample_metrics": {
+      "total_return_pct": 0.0,
+      "sharpe_ratio": 0.0,
+      "max_drawdown_pct": 0.0,
+      "total_trades": 0,
+      "win_rate": 0.0,
+      "profit_factor": 0.0,
+      "expectancy": 0.0
+    }
+  }
+]
